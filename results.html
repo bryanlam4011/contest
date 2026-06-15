@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Results — Chili Contest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">← Back</a>
+    <h1>Results</h1>
+    <div id="winner-banner" class="hidden winner-banner"></div>
+    <div class="results-list" id="results-list"></div>
+    <p class="note">Votes are stored on this device only.</p>
+  </div>
+
+  <script>
+    const CHILIS = [
+      { id: 1, label: "Chili #1" },
+      { id: 2, label: "Chili #2" },
+      { id: 3, label: "Chili #3" },
+      { id: 4, label: "Chili #4" },
+    ];
+
+    const VOTES_KEY = "chili_contest_votes";
+
+    function getVotes() {
+      try {
+        return JSON.parse(localStorage.getItem(VOTES_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    const votes = getVotes();
+    const totals = CHILIS.map(c => ({ ...c, count: votes[c.id] || 0 }));
+    const maxVotes = Math.max(...totals.map(c => c.count));
+    const sorted = [...totals].sort((a, b) => b.count - a.count);
+    const totalVotes = totals.reduce((s, c) => s + c.count, 0);
+
+    if (maxVotes > 0) {
+      const winners = sorted.filter(c => c.count === maxVotes);
+      const banner = document.getElementById("winner-banner");
+      banner.classList.remove("hidden");
+      if (winners.length === 1) {
+        banner.innerHTML = `<span class="trophy">🏆</span><strong>${winners[0].label}</strong> is winning!`;
+      } else {
+        const tied = winners.map(w => w.label).join(" & ");
+        banner.innerHTML = `<span class="trophy">🤝</span><strong>${tied}</strong> are tied!`;
+      }
+    }
+
+    const list = document.getElementById("results-list");
+    sorted.forEach(chili => {
+      const pct = totalVotes > 0 ? Math.round((chili.count / totalVotes) * 100) : 0;
+      const isLeading = chili.count === maxVotes && maxVotes > 0;
+      const row = document.createElement("div");
+      row.className = "result-row" + (isLeading ? " leading" : "");
+      row.innerHTML = `
+        <div class="result-label">
+          ${isLeading ? "🌶️ " : ""}<span>${chili.label}</span>
+        </div>
+        <div class="result-bar-wrap">
+          <div class="result-bar" style="width: ${pct}%"></div>
+        </div>
+        <div class="result-count">${chili.count} <small>(${pct}%)</small></div>
+      `;
+      list.appendChild(row);
+    });
+
+    if (totalVotes === 0) {
+      list.innerHTML = `<p class="note" style="text-align:center; margin-top:2rem;">No votes yet.</p>`;
+    }
+  </script>
+</body>
+</html>

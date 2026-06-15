@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vote — Chili Contest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">← Back</a>
+    <h1>Cast Your Vote</h1>
+    <p class="subtitle">Pick your favorite chili and submit your vote.</p>
+
+    <div id="vote-form">
+      <div class="chili-grid" id="chili-grid"></div>
+      <button class="btn btn-primary btn-submit" id="submit-btn" disabled>Submit Vote</button>
+    </div>
+  </div>
+
+  <script>
+    // Hardcoded chili contestants — edit names/count here
+    const CHILIS = [
+      { id: 1, label: "Chili #1" },
+      { id: 2, label: "Chili #2" },
+      { id: 3, label: "Chili #3" },
+      { id: 4, label: "Chili #4" },
+    ];
+
+    const VOTES_KEY = "chili_contest_votes";
+
+    function getVotes() {
+      try {
+        return JSON.parse(localStorage.getItem(VOTES_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveVotes(votes) {
+      localStorage.setItem(VOTES_KEY, JSON.stringify(votes));
+    }
+
+    const grid = document.getElementById("chili-grid");
+    const submitBtn = document.getElementById("submit-btn");
+    let selected = null;
+
+    CHILIS.forEach(chili => {
+      const card = document.createElement("button");
+      card.className = "chili-card";
+      card.dataset.id = chili.id;
+      card.innerHTML = `<span class="chili-num">${chili.label}</span><span class="chili-icon">🌶️</span>`;
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".chili-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        selected = chili.id;
+        submitBtn.disabled = false;
+      });
+      grid.appendChild(card);
+    });
+
+    submitBtn.addEventListener("click", () => {
+      if (!selected) return;
+      const votes = getVotes();
+      votes[selected] = (votes[selected] || 0) + 1;
+      saveVotes(votes);
+      window.location.href = "results.html";
+    });
+  </script>
+</body>
+</html>
