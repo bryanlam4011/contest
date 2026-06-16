@@ -42,7 +42,7 @@
       banner.classList.remove("hidden");
       const winners = totals.filter(c => c.count === maxVotes);
       if (winners.length === 1) {
-        banner.innerHTML = `<span class="trophy">🏆</span><strong>${winners[0].label}</strong> is the winner!`;
+        banner.innerHTML = `<span class="trophy">🏆</span><strong>${winners[0].label}</strong> wins!`;
       } else {
         const tied = winners.map(w => w.label).join(" & ");
         banner.innerHTML = `<span class="trophy">🤝</span><strong>${tied}</strong> are tied!`;
