@@ -26,28 +26,10 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-    // ── REPLACE with your Firebase project config ──────────────────────────
-    const firebaseConfig = {
-      apiKey:            "YOUR_API_KEY",
-      authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-      databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-      projectId:         "YOUR_PROJECT_ID",
-      storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId:             "YOUR_APP_ID",
-    };
-    // ───────────────────────────────────────────────────────────────────────
+    import { firebaseConfig, CHILIS } from "./firebase-config.js";
 
     const app = initializeApp(firebaseConfig);
     const db  = getDatabase(app);
-
-    const CHILIS = [
-      { id: "1", label: "Chili #1" },
-      { id: "2", label: "Chili #2" },
-      { id: "3", label: "Chili #3" },
-      { id: "4", label: "Chili #4" },
-    ];
 
     const grid      = document.getElementById("chili-grid");
     const submitBtn = document.getElementById("submit-btn");
