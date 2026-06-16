@@ -61,30 +61,60 @@ h1 {
 
 .deco {
   position: absolute;
-  font-size: 2.2rem;
-  opacity: 0.18;
+  font-size: 2.5rem;
+  opacity: 0.55;
   pointer-events: none;
   user-select: none;
   animation: float 6s ease-in-out infinite;
 }
 
-.deco-1  { top:  8%; left:  5%; font-size: 3rem;   animation-duration: 7s;  animation-delay: 0s;   }
-.deco-2  { top: 15%; left: 18%; font-size: 1.8rem; animation-duration: 5s;  animation-delay: 1s;   }
-.deco-3  { top: 35%; left:  3%; font-size: 2.5rem; animation-duration: 8s;  animation-delay: 2s;   }
-.deco-4  { top: 55%; left: 10%; font-size: 2rem;   animation-duration: 6s;  animation-delay: 0.5s; }
-.deco-5  { top: 72%; left:  4%; font-size: 2.8rem; animation-duration: 7.5s;animation-delay: 1.5s; }
-.deco-6  { top: 88%; left: 14%; font-size: 2rem;   animation-duration: 5.5s;animation-delay: 3s;   }
-.deco-7  { top:  6%; right: 8%; font-size: 2.5rem; animation-duration: 6.5s;animation-delay: 0.8s; }
-.deco-8  { top: 22%; right: 4%; font-size: 2rem;   animation-duration: 7s;  animation-delay: 2.2s; }
-.deco-9  { top: 42%; right: 6%; font-size: 3rem;   animation-duration: 5.5s;animation-delay: 1.2s; }
-.deco-10 { top: 62%; right: 3%; font-size: 2.2rem; animation-duration: 8s;  animation-delay: 0.3s; }
-.deco-11 { top: 78%; right:10%; font-size: 2.8rem; animation-duration: 6s;  animation-delay: 2.5s; }
-.deco-12 { top: 92%; right: 5%; font-size: 1.8rem; animation-duration: 5s;  animation-delay: 1.8s; }
+.deco-1  { top:  8%; left: 12%; font-size: 3.2rem; animation-duration: 7s;   animation-delay: 0s;   }
+.deco-2  { top: 20%; left: 22%; font-size: 2.2rem; animation-duration: 5s;   animation-delay: 1s;   }
+.deco-3  { top: 38%; left: 10%; font-size: 2.8rem; animation-duration: 8s;   animation-delay: 2s;   }
+.deco-4  { top: 55%; left: 18%; font-size: 2.4rem; animation-duration: 6s;   animation-delay: 0.5s; }
+.deco-5  { top: 72%; left: 12%; font-size: 3rem;   animation-duration: 7.5s; animation-delay: 1.5s; }
+.deco-6  { top: 85%; left: 25%; font-size: 2.2rem; animation-duration: 5.5s; animation-delay: 3s;   }
+.deco-7  { top:  6%; right:12%; font-size: 2.8rem; animation-duration: 6.5s; animation-delay: 0.8s; }
+.deco-8  { top: 22%; right:20%; font-size: 2.2rem; animation-duration: 7s;   animation-delay: 2.2s; }
+.deco-9  { top: 42%; right:10%; font-size: 3.2rem; animation-duration: 5.5s; animation-delay: 1.2s; }
+.deco-10 { top: 60%; right:22%; font-size: 2.5rem; animation-duration: 8s;   animation-delay: 0.3s; }
+.deco-11 { top: 76%; right:12%; font-size: 3rem;   animation-duration: 6s;   animation-delay: 2.5s; }
+.deco-12 { top: 88%; right:24%; font-size: 2rem;   animation-duration: 5s;   animation-delay: 1.8s; }
 
 @keyframes float {
-  0%   { transform: translateY(0px)   rotate(0deg);   }
-  50%  { transform: translateY(-12px) rotate(5deg);   }
-  100% { transform: translateY(0px)   rotate(0deg);   }
+  0%   { transform: translateY(0px)   rotate(0deg);  }
+  50%  { transform: translateY(-14px) rotate(6deg);  }
+  100% { transform: translateY(0px)   rotate(0deg);  }
+}
+
+/* ── Steam puffs ── */
+.steam-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.steam {
+  position: absolute;
+  font-size: 1.6rem;
+  opacity: 0;
+  pointer-events: none;
+  animation: steam-rise 4s ease-in infinite;
+}
+
+.steam-1 { bottom: 38%; left:  13%; animation-delay: 0s;   animation-duration: 3.5s; }
+.steam-2 { bottom: 38%; left:  14%; animation-delay: 1.2s; animation-duration: 4s;   }
+.steam-3 { bottom: 42%; right: 11%; animation-delay: 0.6s; animation-duration: 3.8s; }
+.steam-4 { bottom: 42%; right: 12%; animation-delay: 2s;   animation-duration: 4.2s; }
+.steam-5 { bottom: 28%; left:  20%; animation-delay: 1.5s; animation-duration: 3.5s; }
+.steam-6 { bottom: 24%; right: 22%; animation-delay: 0.3s; animation-duration: 4s;   }
+
+@keyframes steam-rise {
+  0%   { transform: translateY(0)    scale(0.8); opacity: 0;    }
+  20%  { opacity: 0.6; }
+  80%  { opacity: 0.2; }
+  100% { transform: translateY(-60px) scale(1.4); opacity: 0; }
 }
 
 /* ── Home page ── */
