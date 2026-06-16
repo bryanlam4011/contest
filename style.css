@@ -21,6 +21,8 @@ body {
   display: flex;
   justify-content: center;
   padding: 2rem 1rem 4rem;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .container {
@@ -50,8 +52,15 @@ h1 {
 }
 
 /* ── Decorative floating elements ── */
-.deco {
+.deco-layer {
   position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.deco {
+  position: absolute;
   font-size: 2.2rem;
   opacity: 0.18;
   pointer-events: none;
