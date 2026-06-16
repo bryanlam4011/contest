@@ -57,7 +57,7 @@
       try {
         const voteRef = ref(db, `votes/${selected}`);
         await runTransaction(voteRef, current => (current || 0) + 1);
-        window.location.href = "results.html";
+        window.location.href = "thankyou.html";
       } catch (err) {
         console.error(err);
         spinner.textContent = "Something went wrong. Please try again.";

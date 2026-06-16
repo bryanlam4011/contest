@@ -11,9 +11,7 @@
     <a href="index.html" class="back-link">← Back</a>
     <h1>Results</h1>
     <div id="winner-banner" class="hidden winner-banner"></div>
-    <div class="results-list" id="results-list">
-      <p class="note" style="text-align:center; margin-top:2rem;">Loading...</p>
-    </div>
+    <p id="no-votes" class="note hidden" style="text-align:center; margin-top:2rem;">No votes yet.</p>
     <p class="note">Results update live.</p>
   </div>
 
@@ -26,53 +24,29 @@
     const app = initializeApp(firebaseConfig);
     const db  = getDatabase(app);
 
-    const list   = document.getElementById("results-list");
-    const banner = document.getElementById("winner-banner");
+    const banner  = document.getElementById("winner-banner");
+    const noVotes = document.getElementById("no-votes");
 
     onValue(ref(db, "votes"), snapshot => {
-      const data = snapshot.val() || {};
-      const totals = CHILIS.map(c => ({ ...c, count: data[c.id] || 0 }));
-      const totalVotes = totals.reduce((s, c) => s + c.count, 0);
-      const maxVotes   = Math.max(...totals.map(c => c.count));
-      const sorted     = [...totals].sort((a, b) => b.count - a.count);
+      const data     = snapshot.val() || {};
+      const totals   = CHILIS.map(c => ({ ...c, count: data[c.id] || 0 }));
+      const maxVotes = Math.max(...totals.map(c => c.count));
 
-      // Winner banner
-      if (maxVotes > 0) {
-        banner.classList.remove("hidden");
-        const winners = sorted.filter(c => c.count === maxVotes);
-        if (winners.length === 1) {
-          banner.innerHTML = `<span class="trophy">🏆</span><strong>${winners[0].label}</strong> is winning!`;
-        } else {
-          const tied = winners.map(w => w.label).join(" & ");
-          banner.innerHTML = `<span class="trophy">🤝</span><strong>${tied}</strong> are tied!`;
-        }
-      } else {
+      if (maxVotes === 0) {
         banner.classList.add("hidden");
-      }
-
-      // Results rows
-      if (totalVotes === 0) {
-        list.innerHTML = `<p class="note" style="text-align:center; margin-top:2rem;">No votes yet.</p>`;
+        noVotes.classList.remove("hidden");
         return;
       }
 
-      list.innerHTML = "";
-      sorted.forEach(chili => {
-        const pct       = Math.round((chili.count / totalVotes) * 100);
-        const isLeading = chili.count === maxVotes && maxVotes > 0;
-        const row = document.createElement("div");
-        row.className = "result-row" + (isLeading ? " leading" : "");
-        row.innerHTML = `
-          <div class="result-label">
-            ${isLeading ? "🌶️ " : ""}<span>${chili.label}</span>
-          </div>
-          <div class="result-bar-wrap">
-            <div class="result-bar" style="width: ${pct}%"></div>
-          </div>
-          <div class="result-count">${chili.count} <small>(${pct}%)</small></div>
-        `;
-        list.appendChild(row);
-      });
+      noVotes.classList.add("hidden");
+      banner.classList.remove("hidden");
+      const winners = totals.filter(c => c.count === maxVotes);
+      if (winners.length === 1) {
+        banner.innerHTML = `<span class="trophy">🏆</span><strong>${winners[0].label}</strong> is the winner!`;
+      } else {
+        const tied = winners.map(w => w.label).join(" & ");
+        banner.innerHTML = `<span class="trophy">🤝</span><strong>${tied}</strong> are tied!`;
+      }
     });
   </script>
 </body>
