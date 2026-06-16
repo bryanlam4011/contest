@@ -16,39 +16,48 @@
       <div class="chili-grid" id="chili-grid"></div>
       <button class="btn btn-primary btn-submit" id="submit-btn" disabled>Submit Vote</button>
     </div>
+
+    <div id="submitting" class="hidden" style="text-align:center; padding: 2rem 0; color: var(--muted);">
+      Submitting your vote...
+    </div>
   </div>
 
-  <script>
-    // Hardcoded chili contestants — edit names/count here
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // ── REPLACE with your Firebase project config ──────────────────────────
+    const firebaseConfig = {
+      apiKey:            "YOUR_API_KEY",
+      authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+      projectId:         "YOUR_PROJECT_ID",
+      storageBucket:     "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId:             "YOUR_APP_ID",
+    };
+    // ───────────────────────────────────────────────────────────────────────
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
+
     const CHILIS = [
-      { id: 1, label: "Chili #1" },
-      { id: 2, label: "Chili #2" },
-      { id: 3, label: "Chili #3" },
-      { id: 4, label: "Chili #4" },
+      { id: "1", label: "Chili #1" },
+      { id: "2", label: "Chili #2" },
+      { id: "3", label: "Chili #3" },
+      { id: "4", label: "Chili #4" },
     ];
 
-    const VOTES_KEY = "chili_contest_votes";
-
-    function getVotes() {
-      try {
-        return JSON.parse(localStorage.getItem(VOTES_KEY)) || {};
-      } catch {
-        return {};
-      }
-    }
-
-    function saveVotes(votes) {
-      localStorage.setItem(VOTES_KEY, JSON.stringify(votes));
-    }
-
-    const grid = document.getElementById("chili-grid");
+    const grid      = document.getElementById("chili-grid");
     const submitBtn = document.getElementById("submit-btn");
-    let selected = null;
+    const spinner   = document.getElementById("submitting");
+    const form      = document.getElementById("vote-form");
+    let selected    = null;
 
     CHILIS.forEach(chili => {
       const card = document.createElement("button");
       card.className = "chili-card";
-      card.dataset.id = chili.id;
       card.innerHTML = `<span class="chili-num">${chili.label}</span><span class="chili-icon">🌶️</span>`;
       card.addEventListener("click", () => {
         document.querySelectorAll(".chili-card").forEach(c => c.classList.remove("selected"));
@@ -59,12 +68,22 @@
       grid.appendChild(card);
     });
 
-    submitBtn.addEventListener("click", () => {
+    submitBtn.addEventListener("click", async () => {
       if (!selected) return;
-      const votes = getVotes();
-      votes[selected] = (votes[selected] || 0) + 1;
-      saveVotes(votes);
-      window.location.href = "results.html";
+      form.classList.add("hidden");
+      spinner.classList.remove("hidden");
+      try {
+        const voteRef = ref(db, `votes/${selected}`);
+        await runTransaction(voteRef, current => (current || 0) + 1);
+        window.location.href = "results.html";
+      } catch (err) {
+        console.error(err);
+        spinner.textContent = "Something went wrong. Please try again.";
+        setTimeout(() => {
+          spinner.classList.add("hidden");
+          form.classList.remove("hidden");
+        }, 2000);
+      }
     });
   </script>
 </body>
