@@ -49,6 +49,35 @@ h1 {
   margin-top: 1.5rem;
 }
 
+/* ── Decorative floating elements ── */
+.deco {
+  position: fixed;
+  font-size: 2.2rem;
+  opacity: 0.18;
+  pointer-events: none;
+  user-select: none;
+  animation: float 6s ease-in-out infinite;
+}
+
+.deco-1  { top:  8%; left:  5%; font-size: 3rem;   animation-duration: 7s;  animation-delay: 0s;   }
+.deco-2  { top: 15%; left: 18%; font-size: 1.8rem; animation-duration: 5s;  animation-delay: 1s;   }
+.deco-3  { top: 35%; left:  3%; font-size: 2.5rem; animation-duration: 8s;  animation-delay: 2s;   }
+.deco-4  { top: 55%; left: 10%; font-size: 2rem;   animation-duration: 6s;  animation-delay: 0.5s; }
+.deco-5  { top: 72%; left:  4%; font-size: 2.8rem; animation-duration: 7.5s;animation-delay: 1.5s; }
+.deco-6  { top: 88%; left: 14%; font-size: 2rem;   animation-duration: 5.5s;animation-delay: 3s;   }
+.deco-7  { top:  6%; right: 8%; font-size: 2.5rem; animation-duration: 6.5s;animation-delay: 0.8s; }
+.deco-8  { top: 22%; right: 4%; font-size: 2rem;   animation-duration: 7s;  animation-delay: 2.2s; }
+.deco-9  { top: 42%; right: 6%; font-size: 3rem;   animation-duration: 5.5s;animation-delay: 1.2s; }
+.deco-10 { top: 62%; right: 3%; font-size: 2.2rem; animation-duration: 8s;  animation-delay: 0.3s; }
+.deco-11 { top: 78%; right:10%; font-size: 2.8rem; animation-duration: 6s;  animation-delay: 2.5s; }
+.deco-12 { top: 92%; right: 5%; font-size: 1.8rem; animation-duration: 5s;  animation-delay: 1.8s; }
+
+@keyframes float {
+  0%   { transform: translateY(0px)   rotate(0deg);   }
+  50%  { transform: translateY(-12px) rotate(5deg);   }
+  100% { transform: translateY(0px)   rotate(0deg);   }
+}
+
 /* ── Home page ── */
 .home-container {
   display: flex;
