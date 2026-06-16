@@ -4,6 +4,7 @@
   --red: #c0392b;
   --red-dark: #96281b;
   --orange: #e67e22;
+  --yellow: #f1c40f;
   --bg: #1a0a00;
   --surface: #2c1000;
   --surface2: #3d1800;
@@ -48,26 +49,64 @@ h1 {
   margin-top: 1.5rem;
 }
 
-/* Hero */
-.hero {
+/* ── Home page ── */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 2rem 0 1rem;
+  padding-top: 3rem;
 }
 
-.emoji-big {
-  font-size: 3.5rem;
-  display: block;
-  margin-bottom: 0.5rem;
+.flames {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  animation: flicker 1.5s ease-in-out infinite alternate;
 }
 
-.card-row {
+@keyframes flicker {
+  from { transform: scale(1);   opacity: 1; }
+  to   { transform: scale(1.08); opacity: 0.85; }
+}
+
+.home-title {
+  font-size: clamp(3rem, 14vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, #fff 0%, var(--orange) 60%, var(--red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.25rem;
+}
+
+.home-year {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.home-subtitle {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 320px;
+}
+
+.home-buttons {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 360px;
 }
 
-/* Buttons */
+/* ── Buttons ── */
 .btn {
   display: block;
   width: 100%;
@@ -79,17 +118,27 @@ h1 {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: transform 0.1s, opacity 0.1s;
+  transition: transform 0.1s, opacity 0.1s, background 0.15s;
 }
 
 .btn:active { transform: scale(0.97); }
 
-.btn-primary {
-  background: var(--red);
-  color: #fff;
+.btn-big {
+  padding: 1.1rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 16px;
 }
 
-.btn-primary:hover { background: var(--red-dark); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(192, 57, 43, 0.4);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--red-dark), #d4711a);
+  box-shadow: 0 4px 24px rgba(192, 57, 43, 0.6);
+}
 
 .btn-secondary {
   background: var(--surface2);
@@ -105,7 +154,7 @@ h1 {
   pointer-events: none;
 }
 
-/* Back link */
+/* ── Back link ── */
 .back-link {
   display: inline-block;
   color: var(--muted);
@@ -115,7 +164,7 @@ h1 {
 }
 .back-link:hover { color: var(--text); }
 
-/* Chili vote grid */
+/* ── Vote page ── */
 .chili-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -163,87 +212,89 @@ h1 {
   margin-top: 0.5rem;
 }
 
-/* Already voted */
+/* ── Utility ── */
 .hidden { display: none !important; }
 
-.voted-banner {
+/* ── Results page ── */
+.waiting-box {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 1rem;
   background: var(--surface);
-  border-radius: var(--radius);
+  border-radius: 20px;
   border: 1px solid var(--surface2);
+  margin: 1.5rem 0;
 }
 
-.voted-banner p {
-  margin: 0.75rem 0 1.25rem;
+.waiting-emoji {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.waiting-box p {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.winner-box {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: linear-gradient(160deg, #3d1200, #1a0a00);
+  border: 2px solid var(--orange);
+  border-radius: 24px;
+  margin: 1.5rem 0;
+  box-shadow: 0 0 40px rgba(230, 126, 34, 0.25);
+  animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.confetti-row {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5rem;
+}
+
+.winner-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.75rem;
+}
+
+.winner-name {
+  font-size: clamp(2.5rem, 12vw, 4rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 30px rgba(230, 126, 34, 0.6);
+}
+
+.winner-sub {
+  font-size: 1rem;
   color: var(--muted);
 }
 
-/* Results */
-.winner-banner {
-  background: linear-gradient(135deg, #3d1800, #5a2500);
-  border: 1px solid var(--orange);
-  border-radius: var(--radius);
-  padding: 1rem 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.05rem;
+/* ── Thank you page ── */
+.hero {
+  text-align: center;
+  padding: 2rem 0 1rem;
 }
 
-.trophy { font-size: 1.5rem; }
+.emoji-big {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
 
-.results-list {
+.card-row {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-}
-
-.result-row {
-  background: var(--surface);
-  border: 1px solid var(--surface2);
-  border-radius: var(--radius);
-  padding: 0.9rem 1rem;
-  display: grid;
-  grid-template-columns: 7rem 1fr 4rem;
-  align-items: center;
-  gap: 0.75rem;
-  transition: border-color 0.15s;
-}
-
-.result-row.leading {
-  border-color: var(--orange);
-}
-
-.result-label {
-  font-weight: 600;
-  font-size: 0.95rem;
-  white-space: nowrap;
-}
-
-.result-bar-wrap {
-  background: var(--surface2);
-  border-radius: 100px;
-  height: 10px;
-  overflow: hidden;
-}
-
-.result-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--red), var(--orange));
-  border-radius: 100px;
-  transition: width 0.4s ease;
-}
-
-.result-count {
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-align: right;
-  white-space: nowrap;
-}
-
-.result-count small {
-  font-weight: 400;
-  color: var(--muted);
+  margin-bottom: 1.5rem;
 }

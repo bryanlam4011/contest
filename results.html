@@ -3,19 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Results — Chili Contest</title>
+  <title>Results — Chili Cook-Off</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <a href="index.html" class="back-link">← Back</a>
     <h1>Results</h1>
-    <div id="winner-banner" class="hidden winner-banner"></div>
-    <p id="no-votes" class="note hidden" style="text-align:center; margin-top:2rem;">No votes yet.</p>
+
+    <div id="no-votes" class="waiting-box hidden">
+      <div class="waiting-emoji">🌶️</div>
+      <p>No votes yet — the polls are open!</p>
+    </div>
+
+    <div id="winner-box" class="winner-box hidden">
+      <div class="confetti-row">🎉 🏆 🎉</div>
+      <p class="winner-label">The Winner Is</p>
+      <div class="winner-name" id="winner-name"></div>
+      <div class="winner-sub" id="winner-sub"></div>
+    </div>
+
     <p class="note">Results update live.</p>
   </div>
 
-  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -24,8 +34,10 @@
     const app = initializeApp(firebaseConfig);
     const db  = getDatabase(app);
 
-    const banner  = document.getElementById("winner-banner");
-    const noVotes = document.getElementById("no-votes");
+    const noVotes   = document.getElementById("no-votes");
+    const winnerBox = document.getElementById("winner-box");
+    const winnerName = document.getElementById("winner-name");
+    const winnerSub  = document.getElementById("winner-sub");
 
     onValue(ref(db, "votes"), snapshot => {
       const data     = snapshot.val() || {};
@@ -33,19 +45,23 @@
       const maxVotes = Math.max(...totals.map(c => c.count));
 
       if (maxVotes === 0) {
-        banner.classList.add("hidden");
+        winnerBox.classList.add("hidden");
         noVotes.classList.remove("hidden");
         return;
       }
 
       noVotes.classList.add("hidden");
-      banner.classList.remove("hidden");
+      winnerBox.classList.remove("hidden");
+
       const winners = totals.filter(c => c.count === maxVotes);
+      const totalVotes = totals.reduce((s, c) => s + c.count, 0);
+
       if (winners.length === 1) {
-        banner.innerHTML = `<span class="trophy">🏆</span><strong>${winners[0].label}</strong> wins!`;
+        winnerName.textContent = winners[0].label;
+        winnerSub.textContent  = `${maxVotes} of ${totalVotes} votes`;
       } else {
-        const tied = winners.map(w => w.label).join(" & ");
-        banner.innerHTML = `<span class="trophy">🤝</span><strong>${tied}</strong> are tied!`;
+        winnerName.textContent = "It's a Tie!";
+        winnerSub.textContent  = winners.map(w => w.label).join(" & ");
       }
     });
   </script>
